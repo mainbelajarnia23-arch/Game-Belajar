@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PintarVerse — Arena Balap Juara Matematika SD (Murid)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark: #1e293b;
+            --amber: #f59e0b;
+            --sky: #0ea5e9;
+            --emerald: #22c55e;
+            --violet: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Fredoka', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #38bdf8 0%, #bae6fd 58%, #bbf7d0 58%, #4ade80 100%);
+            color: var(--dark);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .cloud {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 999px;
+            z-index: 0;
+            pointer-events: none;
+            animation: driftCloud linear infinite;
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: inherit;
+            border-radius: 50%;
+        }
+        .cloud-1 { width: 130px; height: 42px; top: 7%; left: -150px; animation-duration: 34s; }
+        .cloud-1::before { width: 60px; height: 60px; top: -28px; left: 18px; }
+        .cloud-1::after { width: 48px; height: 48px; top: -20px; right: 20px; }
+
+        .cloud-2 { width: 160px; height: 48px; top: 18%; left: -180px; animation-duration: 46s; animation-delay: -14s; }
+        .cloud-2::before { width: 72px; height: 72px; top: -34px; left: 24px; }
+        .cloud-2::after { width: 56px; height: 56px; top: -24px; right: 24px; }
+
+        .cloud-3 { width: 115px; height: 36px; top: 29%; left: -140px; animation-duration: 29s; animation-delay: -7s; }
+        .cloud-3::before { width: 50px; height: 50px; top: -22px; left: 16px; }
+        .cloud-3::after { width: 42px; height: 42px; top: -16px; right: 16px; }
+
+        @keyframes driftCloud {
+            from { transform: translateX(0); }
+            to { transform: translateX(calc(100vw + 350px)); }
+        }
+
+        .road-strip {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 76px;
+            background: #334155;
+            border-top: 6px solid #1e293b;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .road-dashes {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 200%;
+            height: 8px;
+            transform: translateY(-50%);
+            background: repeating-linear-gradient(90deg, #fde047 0 44px, transparent 44px 88px);
+            animation: moveRoad 2.2s linear infinite;
+        }
+        @keyframes moveRoad {
+            from { transform: translate(0, -50%); }
+            to { transform: translate(-88px, -50%); }
+        }
+
+        .deco-car {
+            position: fixed;
+            bottom: 34px;
+            font-size: 2.3rem;
+            z-index: 2;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 0 rgba(15, 23, 42, 0.35));
+            animation: driveCar 14s linear infinite;
+        }
+        @keyframes driveCar {
+            0% { left: -70px; transform: scaleX(-1); }
+            100% { left: calc(100vw + 70px); transform: scaleX(-1); }
+        }
+
+        .cartoon-panel {
+            background: rgba(255, 255, 255, 0.96);
+            border: 4px solid var(--dark);
+            border-radius: 30px;
+            box-shadow: 0 10px 0 var(--dark);
+        }
+
+        .game-card {
+            background: #ffffff;
+            border: 4px solid var(--dark);
+            border-radius: 26px;
+            box-shadow: 0 8px 0 var(--dark);
+            transition: transform 0.16s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.16s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .game-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 0 var(--dark);
+        }
+
+        .game-card.locked {
+            opacity: 0.82;
+        }
+
+        .play-btn {
+            border: 3px solid var(--dark);
+            border-radius: 18px;
+            padding: 12px 18px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            box-shadow: 0 5px 0 var(--dark);
+            transition: transform 0.08s, box-shadow 0.08s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .play-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 var(--dark);
+        }
+
+        .btn-k1 { background: linear-gradient(180deg, #4ade80, #16a34a); color: #ffffff; }
+        .btn-k3 { background: linear-gradient(180deg, #fde047, #f59e0b); color: #0f172a; }
+        .btn-k4 { background: linear-gradient(180deg, #38bdf8, #0284c7); color: #ffffff; }
+        .btn-locked { background: #e2e8f0; color: #475569; }
+
+        .chip-badge {
+            border: 2.5px solid var(--dark);
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 3px 0 var(--dark);
+        }
+
+        .sun-orb {
+            position: fixed;
+            top: 24px;
+            right: 32px;
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fef08a 25%, #facc15 100%);
+            border: 4px solid #ca8a04;
+            box-shadow: 0 0 30px rgba(250, 204, 21, 0.75);
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="py-6 px-4 pb-28">
+
+    <div class="sun-orb"></div>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="road-strip"><div class="road-dashes"></div></div>
+    <div class="deco-car">🏎️</div>
+
+    <main class="relative z-10 max-w-5xl mx-auto">
+        <!-- HEADER KHUSUS MURID / SISWA / ANAK -->
+        <header class="cartoon-panel p-5 sm:p-7 text-center mb-5 bg-gradient-to-b from-amber-50 to-white">
+            <div class="inline-flex flex-wrap items-center justify-center gap-2 mb-2">
+                <span class="chip-badge bg-slate-900 text-amber-300">
+                    🚀 ARENA MURID / SISWA / ANAK
+                </span>
+                <span class="chip-badge bg-emerald-200 text-slate-900">
+                    📚 ASAS I • TAHUN AJARAN 2026/2027
+                </span>
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight mt-1">
+                🌟 PintarVerse
+            </h1>
+            <p class="text-base sm:text-lg font-bold text-amber-900 mt-1">
+                Arena Balap Juara Matematika • Latihan Asesmen Sumatif Akhir Semester I
+            </p>
+            <p class="text-xs sm:text-sm font-semibold text-slate-600 max-w-2xl mx-auto mt-1.5">
+                Tulis namamu, masukkan <b>Kode Bermain</b> dari Guru / Tutor / Orang Tua, lalu pilih kelasmu untuk mulai balapan!
+            </p>
+
+            <!-- Form Nama & Penerima Kode -->
+            <div class="mt-4 max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+                <div class="bg-sky-100 border-3 border-slate-800 rounded-2xl p-3.5">
+                    <label for="portalStudentName" class="block font-bold text-slate-900 text-xs sm:text-sm mb-1.5">
+                        🎒 1. Nama Pembalap:
+                    </label>
+                    <input type="text" id="portalStudentName"
+                        class="w-full border-3 border-slate-800 rounded-xl px-3.5 py-2 font-bold text-slate-900 bg-white focus:outline-none focus:ring-4 focus:ring-sky-300"
+                        placeholder="Ketik nama lengkapmu..." maxlength="55">
+                </div>
+
+                <div class="bg-emerald-100 border-3 border-slate-800 rounded-2xl p-3.5">
+                    <label for="studentCodeInput" class="block font-bold text-slate-900 text-xs sm:text-sm mb-1.5">
+                        🎟️ 2. Kode dari Guru / Tutor / Ortu:
+                    </label>
+                    <div class="flex gap-2">
+                        <input type="text" id="studentCodeInput"
+                            class="w-full border-3 border-slate-800 rounded-xl px-3 py-2 font-bold uppercase tracking-wider text-slate-900 bg-white focus:outline-none focus:ring-4 focus:ring-emerald-300"
+                            placeholder="PV-K1-XXXX" maxlength="16">
+                        <button type="button" onclick="redeemStudentCode()"
+                            class="border-3 border-slate-800 rounded-xl px-4 py-2 font-bold bg-emerald-400 hover:bg-emerald-300 text-slate-950 shadow-[0_3px_0_#1e293b] active:translate-y-0.5 cursor-pointer whitespace-nowrap">
+                            🔓 Buka
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <p id="studentFeedback" class="text-xs sm:text-sm font-bold mt-2.5 min-h-[1.25rem]"></p>
+        </header>
+
+        <!-- GRID 3 KARTU GAME KELAS 1, KELAS 3, DAN KELAS 4 -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- KARTU 1: KELAS 1 SD -->
+            <article id="cardK1" class="game-card p-5 bg-gradient-to-b from-emerald-50 to-white">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="chip-badge bg-emerald-400 text-slate-950 text-sm">🎒 KELAS 1 SD</span>
+                        <span id="statusK1" class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 border-2 border-slate-800 text-slate-700">
+                            🔒 Terkunci
+                        </span>
+                    </div>
+
+                    <div class="bg-emerald-100 border-3 border-slate-800 rounded-2xl p-3.5 text-center mb-3">
+                        <div class="text-4xl mb-1">🏎️💨</div>
+                        <h2 class="text-xl font-bold text-slate-900 leading-snug">
+                            Balap Juara Matematika Kelas 1
+                        </h2>
+                        <p class="text-xs font-bold text-emerald-900 mt-0.5">
+                            Kurikulum Merdeka • ASAS I
+                        </p>
+                    </div>
+
+                    <ul class="text-xs sm:text-sm font-bold text-slate-700 space-y-1.5 mb-4 bg-white border-2 border-slate-300 rounded-2xl p-3">
+                        <li>📝 <b>25 Soal:</b> 15 PG &amp; 10 Isian Singkat</li>
+                        <li>🎯 <b>Skor Maksimal:</b> 35 Poin (Nilai 0–100)</li>
+                        <li>📘 <b>Materi:</b> Bilangan 1–20, Penjumlahan, Pengurangan &amp; Bangun Datar</li>
+                        <li id="scoreInfoK1" class="text-emerald-800 pt-1 border-t border-slate-200">
+                            📊 Progres: 0/5 Level • Skor: 0/35
+                        </li>
+                    </ul>
+                </div>
+
+                <a id="btnK1" href="Balap_Pintar_Matematika.html" onclick="return handleStudentPlay(event, 'k1')" class="play-btn btn-locked">
+                    🔒 Masukkan Kode Kelas 1
+                </a>
+            </article>
+
+            <!-- KARTU 2: KELAS 3 SD -->
+            <article id="cardK3" class="game-card p-5 bg-gradient-to-b from-amber-50 to-white">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="chip-badge bg-amber-400 text-slate-950 text-sm">🎒 KELAS 3 SD</span>
+                        <span id="statusK3" class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 border-2 border-slate-800 text-slate-700">
+                            🔒 Terkunci
+                        </span>
+                    </div>
+
+                    <div class="bg-amber-100 border-3 border-slate-800 rounded-2xl p-3.5 text-center mb-3">
+                        <div class="text-4xl mb-1">🏁🏆</div>
+                        <h2 class="text-xl font-bold text-slate-900 leading-snug">
+                            Balap Juara Matematika Kelas 3
+                        </h2>
+                        <p class="text-xs font-bold text-amber-900 mt-0.5">
+                            Kab. Semarang • ASAS I
+                        </p>
+                    </div>
+
+                    <ul class="text-xs sm:text-sm font-bold text-slate-700 space-y-1.5 mb-4 bg-white border-2 border-slate-300 rounded-2xl p-3">
+                        <li>📝 <b>35 Soal:</b> 20 PG, 10 Isian &amp; 5 Uraian</li>
+                        <li>🎯 <b>Skor Maksimal:</b> 70 Poin (Nilai 0–100)</li>
+                        <li>📘 <b>Materi:</b> Bilangan Cacah, Operasi Hitung, Pengukuran Panjang &amp; Berat</li>
+                        <li id="scoreInfoK3" class="text-amber-800 pt-1 border-t border-slate-200">
+                            📊 Progres: 0/5 Level • Skor: 0/70
+                        </li>
+                    </ul>
+                </div>
+
+                <a id="btnK3" href="Balap_Juara_Matematika_Kelas_3.html" onclick="return handleStudentPlay(event, 'k3')" class="play-btn btn-locked">
+                    🔒 Masukkan Kode Kelas 3
+                </a>
+            </article>
+
+            <!-- KARTU 3: KELAS 4 SD -->
+            <article id="cardK4" class="game-card p-5 bg-gradient-to-b from-sky-50 to-white">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="chip-badge bg-sky-400 text-slate-950 text-sm">🎒 KELAS 4 SD</span>
+                        <span id="statusK4" class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 border-2 border-slate-800 text-slate-700">
+                            🔒 Terkunci
+                        </span>
+                    </div>
+
+                    <div class="bg-sky-100 border-3 border-slate-800 rounded-2xl p-3.5 text-center mb-3">
+                        <div class="text-4xl mb-1">🚀🥇</div>
+                        <h2 class="text-xl font-bold text-slate-900 leading-snug">
+                            Balap Juara Matematika Kelas 4
+                        </h2>
+                        <p class="text-xs font-bold text-sky-900 mt-0.5">
+                            Kurikulum Merdeka • ASAS I
+                        </p>
+                    </div>
+
+                    <ul class="text-xs sm:text-sm font-bold text-slate-700 space-y-1.5 mb-4 bg-white border-2 border-slate-300 rounded-2xl p-3">
+                        <li>📝 <b>35 Soal:</b> 20 PG, 10 Isian &amp; 5 Uraian</li>
+                        <li>🎯 <b>Skor Maksimal:</b> 55 Poin (Nilai 0–100)</li>
+                        <li>📘 <b>Materi:</b> Bilangan 10.000, Faktor/Kelipatan, Pecahan, Desimal &amp; Pola</li>
+                        <li id="scoreInfoK4" class="text-sky-800 pt-1 border-t border-slate-200">
+                            📊 Progres: 0/5 Level • Skor: 0/55
+                        </li>
+                    </ul>
+                </div>
+
+                <a id="btnK4" href="Balap_Juara_Matematika_new.html" onclick="return handleStudentPlay(event, 'k4')" class="play-btn btn-locked">
+                    🔒 Masukkan Kode Kelas 4
+                </a>
+            </article>
+        </section>
+
+        <!-- FOOTER INFORMASI SINGKAT -->
+        <footer class="mt-6 text-center">
+            <div class="inline-block bg-white/90 border-3 border-slate-800 rounded-2xl px-4 py-2 text-xs sm:text-sm font-bold text-slate-800 shadow">
+                💡 Tips: Selesaikan semua 5 level pada kelas pilihanmu untuk mengunduh <b>Sertifikat Juara (.JPG)</b>!
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        const KEYS = {
+            k1: 'balap_juara_matematika_k1_asas1_1x_2026',
+            k3: 'balap_juara_matematika_k3_asas1_1x_2026',
+            k4: 'balap_juara_matematika_k4_asas1_1x_2026',
+            portalName: 'pintarverse_student_name_2026',
+            studentUnlock: 'pintarverse_student_unlocked_2026'
+        };
+
+        const CLASS_LABELS = {
+            k1: 'Kelas 1 SD',
+            k3: 'Kelas 3 SD',
+            k4: 'Kelas 4 SD',
+            all: 'Semua Kelas (1, 3 & 4)'
+        };
+
+        // Validasi kode lintas perangkat sesuai checksum dari guru.html
+        function validateCodeAndGetClass(rawCode) {
+            const cleaned = String(rawCode || '').trim().toUpperCase();
+            const match = cleaned.match(/^PV-(K1|K3|K4|ALL)-(\d{4})$/);
+            if (!match) return null;
+
+            const classCode = match[1].toLowerCase();
+            const digits = match[2];
+            const weightMap = { k1: 1, k3: 3, k4: 4, all: 7 };
+            const w = weightMap[classCode];
+
+            const d1 = Number(digits[0]);
+            const d2 = Number(digits[1]);
+            const d3 = Number(digits[2]);
+            const d4 = Number(digits[3]);
+            const expectedCheck = (d1 * 3 + d2 * 5 + d3 * 7 + w) % 10;
+
+            if (d4 !== expectedCheck) return null;
+            return classCode;
+        }
+
+        function getUnlockedState() {
+            try {
+                const raw = localStorage.getItem(KEYS.studentUnlock);
+                const parsed = raw ? JSON.parse(raw) : {};
+                return {
+                    k1: Boolean(parsed.k1),
+                    k3: Boolean(parsed.k3),
+                    k4: Boolean(parsed.k4)
+                };
+            } catch (_) {
+                return { k1: false, k3: false, k4: false };
+            }
+        }
+
+        function saveUnlockedState(state) {
+            try {
+                localStorage.setItem(KEYS.studentUnlock, JSON.stringify(state));
+            } catch (_) {}
+        }
+
+        function redeemStudentCode(silentIfEmpty = false) {
+            const inputEl = document.getElementById('studentCodeInput');
+            const feedbackEl = document.getElementById('studentFeedback');
+            const code = inputEl.value.trim().toUpperCase();
+
+            if (!code) {
+                if (!silentIfEmpty) {
+                    feedbackEl.className = 'text-xs sm:text-sm font-bold text-amber-800 mt-2.5 min-h-[1.25rem]';
+                    feedbackEl.textContent = '⚠️ Ketik dulu kode dari Guru / Tutor / Orang Tua.';
+                }
+                return false;
+            }
+
+            const targetClass = validateCodeAndGetClass(code);
+            if (!targetClass) {
+                feedbackEl.className = 'text-xs sm:text-sm font-bold text-rose-700 mt-2.5 min-h-[1.25rem]';
+                feedbackEl.textContent = '❌ Kode tidak cocok atau salah ketik. Periksa kembali kode dari Guru / Tutor / Orang Tua.';
+                return false;
+            }
+
+            const current = getUnlockedState();
+            if (targetClass === 'all') {
+                current.k1 = true;
+                current.k3 = true;
+                current.k4 = true;
+            } else {
+                current[targetClass] = true;
+            }
+            saveUnlockedState(current);
+            refreshPortalCards();
+
+            feedbackEl.className = 'text-xs sm:text-sm font-bold text-emerald-800 mt-2.5 min-h-[1.25rem]';
+            feedbackEl.textContent = `🎉 Berhasil! Akses ${CLASS_LABELS[targetClass]} sudah terbuka. Selamat bertanding!`;
+            return true;
+        }
+
+        function handleStudentPlay(event, classKey) {
+            syncNameBeforeGo();
+            const unlocked = getUnlockedState();
+            if (!unlocked[classKey]) {
+                event.preventDefault();
+                const inputEl = document.getElementById('studentCodeInput');
+                const feedbackEl = document.getElementById('studentFeedback');
+                inputEl.focus();
+                feedbackEl.className = 'text-xs sm:text-sm font-bold text-rose-700 mt-2.5 min-h-[1.25rem]';
+                feedbackEl.textContent = `🔒 ${CLASS_LABELS[classKey]} masih terkunci. Masukkan kode dari Guru / Tutor / Orang Tua dulu ya!`;
+                return false;
+            }
+
+            const nameVal = document.getElementById('portalStudentName').value.trim();
+            if (!nameVal) {
+                event.preventDefault();
+                const nameInput = document.getElementById('portalStudentName');
+                const feedbackEl = document.getElementById('studentFeedback');
+                nameInput.focus();
+                feedbackEl.className = 'text-xs sm:text-sm font-bold text-amber-800 mt-2.5 min-h-[1.25rem]';
+                feedbackEl.textContent = '✏️ Tulis nama lengkapmu dulu di kolom "Nama Pembalap" sebelum mulai bermain!';
+                return false;
+            }
+
+            return true;
+        }
+
+        function readState(storageKey) {
+            try {
+                const raw = localStorage.getItem(storageKey);
+                return raw ? JSON.parse(raw) : null;
+            } catch (_) {
+                return null;
+            }
+        }
+
+        function computeTotalScore(st) {
+            if (!st || !st.questionResults) return 0;
+            return Object.values(st.questionResults).reduce((acc, item) => acc + Number(item?.score || 0), 0);
+        }
+
+        function syncNameBeforeGo() {
+            const val = document.getElementById('portalStudentName').value.trim();
+            localStorage.setItem(KEYS.portalName, val);
+            [KEYS.k1, KEYS.k3, KEYS.k4].forEach(k => {
+                try {
+                    const st = readState(k) || {};
+                    st.studentName = val;
+                    localStorage.setItem(k, JSON.stringify(st));
+                } catch (_) {}
+            });
+        }
+
+        function updateCardUI(classKey, st, maxScore, statusId, infoId, btnId, unlockedClassBtn, playText) {
+            const unlocked = getUnlockedState()[classKey];
+            const cardEl = document.getElementById('card' + classKey.toUpperCase());
+            const statusEl = document.getElementById(statusId);
+            const infoEl = document.getElementById(infoId);
+            const btnEl = document.getElementById(btnId);
+
+            if (!unlocked) {
+                cardEl.classList.add('locked');
+                statusEl.textContent = '🔒 Terkunci';
+                statusEl.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 border-2 border-slate-800 text-slate-700';
+                btnEl.className = 'play-btn btn-locked';
+                btnEl.textContent = `🔒 Masukkan Kode ${CLASS_LABELS[classKey]}`;
+            } else {
+                cardEl.classList.remove('locked');
+                btnEl.className = `play-btn ${unlockedClassBtn}`;
+                btnEl.textContent = playText;
+
+                if (!st) {
+                    statusEl.textContent = '🔓 Terbuka • Siap Main';
+                    statusEl.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-200 border-2 border-slate-900 text-slate-950';
+                } else {
+                    const clearedCount = Array.isArray(st.levelCleared) ? st.levelCleared.filter(Boolean).length : 0;
+                    const totalSc = computeTotalScore(st);
+                    if (st.allCompleted) {
+                        statusEl.textContent = '🏅 Lulus & Bersertifikat';
+                        statusEl.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-amber-300 border-2 border-slate-900 text-slate-950';
+                    } else if (clearedCount > 0 || totalSc > 0) {
+                        statusEl.textContent = `⏳ Level ${clearedCount}/5`;
+                        statusEl.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-sky-200 border-2 border-slate-900 text-slate-950';
+                    } else {
+                        statusEl.textContent = '🔓 Terbuka • Siap Main';
+                        statusEl.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-200 border-2 border-slate-900 text-slate-950';
+                    }
+                }
+            }
+
+            if (!st) {
+                infoEl.textContent = `📊 Progres: 0/5 Level • Skor: 0/${maxScore}`;
+            } else {
+                const clearedCount = Array.isArray(st.levelCleared) ? st.levelCleared.filter(Boolean).length : 0;
+                const totalSc = computeTotalScore(st);
+                const grade100 = Math.round((totalSc / maxScore) * 1000) / 10;
+                infoEl.textContent = `📊 Progres: ${clearedCount}/5 Level • Skor: ${totalSc}/${maxScore} (Nilai ${grade100})`;
+            }
+        }
+
+        function refreshPortalCards() {
+            const st1 = readState(KEYS.k1);
+            const st3 = readState(KEYS.k3);
+            const st4 = readState(KEYS.k4);
+
+            const savedPortalName = localStorage.getItem(KEYS.portalName)
+                || st1?.studentName
+                || st3?.studentName
+                || st4?.studentName
+                || '';
+            const nameInput = document.getElementById('portalStudentName');
+            if (!nameInput.value) {
+                nameInput.value = savedPortalName;
+            }
+
+            updateCardUI('k1', st1, 35, 'statusK1', 'scoreInfoK1', 'btnK1', 'btn-k1', '▶️ Mainkan Kelas 1');
+            updateCardUI('k3', st3, 70, 'statusK3', 'scoreInfoK3', 'btnK3', 'btn-k3', '▶️ Mainkan Kelas 3');
+            updateCardUI('k4', st4, 55, 'statusK4', 'scoreInfoK4', 'btnK4', 'btn-k4', '▶️ Mainkan Kelas 4');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('portalStudentName').addEventListener('input', syncNameBeforeGo);
+            document.getElementById('studentCodeInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') redeemStudentCode();
+            });
+
+            // Jika guru membagikan link murid.html?kode=PV-K1-XXXX, otomatis terisi & terbuka
+            const params = new URLSearchParams(window.location.search);
+            const urlCode = params.get('kode');
+            if (urlCode) {
+                document.getElementById('studentCodeInput').value = urlCode.toUpperCase();
+                redeemStudentCode(true);
+            }
+
+            refreshPortalCards();
+        });
+    </script>
+</body>
+</html>

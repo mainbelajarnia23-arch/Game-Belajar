@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PintarVerse — Panel Guru, Tutor & Orang Tua</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark: #1e293b;
+            --amber: #f59e0b;
+            --sky: #0ea5e9;
+            --emerald: #22c55e;
+            --violet: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Fredoka', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #38bdf8 0%, #bae6fd 58%, #bbf7d0 58%, #4ade80 100%);
+            color: var(--dark);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .cloud {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 999px;
+            z-index: 0;
+            pointer-events: none;
+            animation: driftCloud linear infinite;
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: inherit;
+            border-radius: 50%;
+        }
+        .cloud-1 { width: 130px; height: 42px; top: 7%; left: -150px; animation-duration: 34s; }
+        .cloud-1::before { width: 60px; height: 60px; top: -28px; left: 18px; }
+        .cloud-1::after { width: 48px; height: 48px; top: -20px; right: 20px; }
+
+        .cloud-2 { width: 160px; height: 48px; top: 18%; left: -180px; animation-duration: 46s; animation-delay: -14s; }
+        .cloud-2::before { width: 72px; height: 72px; top: -34px; left: 24px; }
+        .cloud-2::after { width: 56px; height: 56px; top: -24px; right: 24px; }
+
+        @keyframes driftCloud {
+            from { transform: translateX(0); }
+            to { transform: translateX(calc(100vw + 350px)); }
+        }
+
+        .road-strip {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 76px;
+            background: #334155;
+            border-top: 6px solid #1e293b;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .road-dashes {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 200%;
+            height: 8px;
+            transform: translateY(-50%);
+            background: repeating-linear-gradient(90deg, #fde047 0 44px, transparent 44px 88px);
+            animation: moveRoad 2.2s linear infinite;
+        }
+        @keyframes moveRoad {
+            from { transform: translate(0, -50%); }
+            to { transform: translate(-88px, -50%); }
+        }
+
+        .deco-car {
+            position: fixed;
+            bottom: 34px;
+            font-size: 2.3rem;
+            z-index: 2;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 0 rgba(15, 23, 42, 0.35));
+            animation: driveCar 14s linear infinite;
+        }
+        @keyframes driveCar {
+            0% { left: -70px; transform: scaleX(-1); }
+            100% { left: calc(100vw + 70px); transform: scaleX(-1); }
+        }
+
+        .cartoon-panel {
+            background: rgba(255, 255, 255, 0.96);
+            border: 4px solid var(--dark);
+            border-radius: 30px;
+            box-shadow: 0 10px 0 var(--dark);
+        }
+
+        .game-card {
+            background: #ffffff;
+            border: 4px solid var(--dark);
+            border-radius: 26px;
+            box-shadow: 0 8px 0 var(--dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .play-btn {
+            border: 3px solid var(--dark);
+            border-radius: 18px;
+            padding: 12px 18px;
+            font-size: 1rem;
+            font-weight: 700;
+            box-shadow: 0 5px 0 var(--dark);
+            transition: transform 0.08s, box-shadow 0.08s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .play-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 var(--dark);
+        }
+
+        .mini-btn {
+            border: 2.5px solid var(--dark);
+            border-radius: 14px;
+            padding: 9px 14px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 4px 0 var(--dark);
+            transition: transform 0.08s, box-shadow 0.08s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .mini-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 var(--dark);
+        }
+
+        .btn-k1 { background: linear-gradient(180deg, #4ade80, #16a34a); color: #ffffff; }
+        .btn-k3 { background: linear-gradient(180deg, #fde047, #f59e0b); color: #0f172a; }
+        .btn-k4 { background: linear-gradient(180deg, #38bdf8, #0284c7); color: #ffffff; }
+
+        .chip-badge {
+            border: 2.5px solid var(--dark);
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 3px 0 var(--dark);
+        }
+
+        .sun-orb {
+            position: fixed;
+            top: 24px;
+            right: 32px;
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fef08a 25%, #facc15 100%);
+            border: 4px solid #ca8a04;
+            box-shadow: 0 0 30px rgba(250, 204, 21, 0.75);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Modal Overlay untuk Detail Murid */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 50;
+        }
+        .modal-card {
+            background: #ffffff;
+            border: 4px solid var(--dark);
+            border-radius: 28px;
+            padding: 24px;
+            width: 100%;
+            max-width: 720px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 0 var(--dark);
+        }
+    </style>
+</head>
+<body class="py-6 px-4 pb-28">
+
+    <div class="sun-orb"></div>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="road-strip"><div class="road-dashes"></div></div>
+    <div class="deco-car">🏎️</div>
+
+    <main class="relative z-10 max-w-5xl mx-auto">
+        <!-- HEADER KHUSUS GURU / TUTOR / ORANG TUA -->
+        <header class="cartoon-panel p-5 sm:p-7 mb-6 bg-gradient-to-b from-amber-50 to-white">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="chip-badge bg-slate-900 text-amber-300">
+                        👩‍🏫 PANEL PENDAMPING
+                    </span>
+                    <span class="chip-badge bg-amber-200 text-slate-900">
+                        🔐 PEMEGANG KODE ACAK
+                    </span>
+                </div>
+                <a href="murid.html" class="mini-btn bg-emerald-300 text-slate-950">
+                    🧒 Buka Halaman Murid →
+                </a>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+                🌟 PintarVerse — Kontrol Guru, Tutor &amp; Orang Tua
+            </h1>
+            <p class="text-sm sm:text-base font-semibold text-slate-600 mt-1">
+                Buat kode acak per kelas atau semua kelas, bagikan ke murid/anak, atau pantau detail perolehan nilai latihan ASAS I. Klik pada tombol pratinjau kelas untuk melihat daftar murid selengkapnya.
+            </p>
+        </header>
+
+        <!-- GENERATOR KODE ACAK LINTAS PERANGKAT -->
+        <section class="cartoon-panel p-5 sm:p-6 mb-6 bg-white">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+                <div class="lg:col-span-7 bg-amber-50 border-3 border-slate-800 rounded-2xl p-4 sm:p-5">
+                    <span class="chip-badge bg-violet-200 text-slate-950 mb-2">
+                        🎲 GENERATOR KODE SESI
+                    </span>
+                    <label for="targetClassSelect" class="block text-sm font-bold text-slate-900 mb-2">
+                        1. Pilih Kelas yang Akan Dibuka untuk Murid:
+                    </label>
+                    <div class="flex flex-col sm:flex-row gap-2.5">
+                        <select id="targetClassSelect"
+                            class="border-3 border-slate-800 rounded-xl px-3.5 py-2.5 font-bold text-slate-900 bg-white focus:outline-none focus:ring-4 focus:ring-amber-300">
+                            <option value="k1">🎒 Kelas 1 SD</option>
+                            <option value="k3">🎒 Kelas 3 SD</option>
+                            <option value="k4">🎒 Kelas 4 SD</option>
+                            <option value="all">🌟 Semua Kelas (1, 3 &amp; 4)</option>
+                        </select>
+                        <button type="button" onclick="generateRandomCode()" class="mini-btn bg-amber-400 text-slate-950 whitespace-nowrap">
+                            🎲 Acak Kode Baru
+                        </button>
+                    </div>
+
+                    <div class="mt-4 bg-white border-3 border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block">
+                                Kode Acak untuk Diberikan ke Murid:
+                            </span>
+                            <span id="generatedCodeDisplay" class="text-2xl sm:text-3xl font-bold tracking-widest text-slate-950 select-all">
+                                PV-K1-4826
+                            </span>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" onclick="copyGeneratedCode()" class="mini-btn bg-sky-300 text-slate-950">
+                                📋 Salin Kode
+                            </button>
+                            <button type="button" onclick="copyStudentLinkWithCode()" class="mini-btn bg-emerald-400 text-slate-950">
+                                🔗 Salin Link Murid
+                            </button>
+                        </div>
+                    </div>
+
+                    <p id="mentorFeedback" class="text-xs sm:text-sm font-bold text-emerald-800 mt-2.5 min-h-[1.25rem]"></p>
+                </div>
+
+                <!-- RIWAYAT KODE -->
+                <div class="lg:col-span-5 bg-slate-50 border-3 border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2.5">
+                            <span class="text-sm font-bold text-slate-900">
+                                📜 Riwayat Kode yang Dibuat
+                            </span>
+                            <button type="button" onclick="clearHistory()" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-900 border-2 border-slate-800 cursor-pointer">
+                                🗑️ Hapus Riwayat
+                            </button>
+                        </div>
+                        <ul id="codeHistoryList" class="space-y-2 text-xs font-bold text-slate-700 max-h-44 overflow-y-auto pr-1">
+                            <li class="text-slate-400 italic">Belum ada riwayat kode.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRATINJAU & REKAP SKOR PERANGKAT INI (DAPAT DI-KLIK) -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- KELAS 1 -->
+            <article class="game-card p-5 bg-gradient-to-b from-emerald-50 to-white">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="chip-badge bg-emerald-400 text-slate-950 text-sm">🎒 KELAS 1 SD</span>
+                        <span id="badgeCountK1" class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-200 border-2 border-slate-800 text-slate-900">
+                            👤 0 Murid Masuk
+                        </span>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-900 mb-1">Balap Juara Matematika Kelas 1</h2>
+                    <p id="scoreInfoK1" class="text-xs sm:text-sm font-bold text-emerald-800 bg-white border-2 border-slate-300 rounded-xl p-3 mb-4">
+                        📊 Belum ada data murid
+                    </p>
+                </div>
+                <div class="space-y-2">
+                    <button type="button" onclick="openStudentDetailModal('k1')" class="play-btn btn-k1">
+                        👁️ Pratinjau Soal &amp; Lihat Murid
+                    </button>
+                    <a href="Balap_Pintar_Matematika.html" class="text-xs font-bold text-center block text-slate-600 hover:underline">
+                        Buka Langsung Game K1 ↗
+                    </a>
+                </div>
+            </article>
+
+            <!-- KELAS 3 -->
+            <article class="game-card p-5 bg-gradient-to-b from-amber-50 to-white">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="chip-badge bg-amber-400 text-slate-950 text-sm">🎒 KELAS 3 SD</span>
+                        <span id="badgeCountK3" class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-200 border-2 border-slate-800 text-slate-900">
+                            👤 0 Murid Masuk
+                        </span>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-900 mb-1">Balap Juara Matematika Kelas 3</h2>
+                    <p id="scoreInfoK3" class="text-xs sm:text-sm font-bold text-amber-800 bg-white border-2 border-slate-300 rounded-xl p-3 mb-4">
+                        📊 Belum ada data murid
+                    </p>
+                </div>
+                <div class="space-y-2">
+                    <button type="button" onclick="openStudentDetailModal('k3')" class="play-btn btn-k3" style="background: linear-gradient(180deg, #fde047, #f59e0b); color: #0f172a;">
+                        👁️ Pratinjau Soal &amp; Lihat Murid
+                    </button>
+                    <a href="Balap_Juara_Matematika_Kelas_3.html" class="text-xs font-bold text-center block text-slate-600 hover:underline">
+                        Buka Langsung Game K3 ↗
+                    </a>
+                </div>
+            </article>
+
+            <!-- KELAS 4 -->
+            <article class="game-card p-5 bg-gradient-to-b from-sky-50 to-white">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="chip-badge bg-sky-400 text-slate-950 text-sm">🎒 KELAS 4 SD</span>
+                        <span id="badgeCountK4" class="text-xs font-bold px-2.5 py-1 rounded-full bg-sky-200 border-2 border-slate-800 text-slate-900">
+                            👤 0 Murid Masuk
+                        </span>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-900 mb-1">Balap Juara Matematika Kelas 4</h2>
+                    <p id="scoreInfoK4" class="text-xs sm:text-sm font-bold text-sky-800 bg-white border-2 border-slate-300 rounded-xl p-3 mb-4">
+                        📊 Belum ada data murid
+                    </p>
+                </div>
+                <div class="space-y-2">
+                    <button type="button" onclick="openStudentDetailModal('k4')" class="play-btn btn-k4">
+                        👁️ Pratinjau Soal &amp; Lihat Murid
+                    </button>
+                    <a href="Balap_Juara_Matematika_new.html" class="text-xs font-bold text-center block text-slate-600 hover:underline">
+                        Buka Langsung Game K4 ↗
+                    </a>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <!-- MODAL POP-UP DETAIL MURID -->
+    <div id="studentDetailModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="flex items-center justify-between mb-4 pb-2 border-b-2 border-slate-200">
+                <div>
+                    <h2 id="modalTitle" class="text-xl sm:text-2xl font-bold text-slate-900">📋 Daftar Murid &amp; Rekap Nilai</h2>
+                    <p id="modalSubtitle" class="text-xs sm:text-sm font-semibold text-slate-600">Detail akses dan perolehan skor siswa</p>
+                </div>
+                <button type="button" onclick="closeStudentDetailModal()" class="mini-btn bg-rose-200 text-rose-900 hover:bg-rose-300">
+                    ✕ Tutup
+                </button>
+            </div>
+
+            <div id="modalContentBody" class="space-y-3">
+                <!-- Tabel daftar murid akan dimasukkan lewat JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const KEYS = {
+            k1: 'balap_juara_matematika_k1_asas1_1x_2026',
+            k3: 'balap_juara_matematika_k3_asas1_1x_2026',
+            k4: 'balap_juara_matematika_k4_asas1_1x_2026',
+            mentorHistory: 'pintarverse_mentor_history_2026'
+        };
+
+        const CLASS_META = {
+            k1: { name: 'Kelas 1 SD', maxScore: 35, storageKey: KEYS.k1 },
+            k3: { name: 'Kelas 3 SD', maxScore: 70, storageKey: KEYS.k3 },
+            k4: { name: 'Kelas 4 SD', maxScore: 55, storageKey: KEYS.k4 }
+        };
+
+        function buildValidRandomCode(targetClass) {
+            const prefixMap = { k1: 'PV-K1', k3: 'PV-K3', k4: 'PV-K4', all: 'PV-ALL' };
+            const weightMap = { k1: 1, k3: 3, k4: 4, all: 7 };
+            const prefix = prefixMap[targetClass] || 'PV-ALL';
+            const w = weightMap[targetClass] || 7;
+
+            const d1 = Math.floor(1 + Math.random() * 9);
+            const d2 = Math.floor(Math.random() * 10);
+            const d3 = Math.floor(Math.random() * 10);
+            const checkDigit = (d1 * 3 + d2 * 5 + d3 * 7 + w) % 10;
+
+            return `${prefix}-${d1}${d2}${d3}${checkDigit}`;
+        }
+
+        function getHistory() {
+            try {
+                const raw = localStorage.getItem(KEYS.mentorHistory);
+                return raw ? JSON.parse(raw) : [];
+            } catch (_) {
+                return [];
+            }
+        }
+
+        function saveHistory(list) {
+            try {
+                localStorage.setItem(KEYS.mentorHistory, JSON.stringify(list));
+            } catch (_) {}
+        }
+
+        function generateRandomCode() {
+            const targetClass = document.getElementById('targetClassSelect').value;
+            const code = buildValidRandomCode(targetClass);
+            document.getElementById('generatedCodeDisplay').textContent = code;
+
+            const timeLabel = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+            const nextHistory = [
+                { code, targetClass, time: timeLabel },
+                ...getHistory().filter(item => item.code !== code)
+            ].slice(0, 8);
+
+            saveHistory(nextHistory);
+            renderHistory(nextHistory);
+
+            document.getElementById('mentorFeedback').textContent = `✨ Kode acak ${code} berhasil dibuat!`;
+        }
+
+        function copyTextSafe(text, successMsg) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    document.getElementById('mentorFeedback').textContent = successMsg;
+                }).catch(() => {
+                    document.getElementById('mentorFeedback').textContent = `📌 Salin manual: ${text}`;
+                });
+            } else {
+                document.getElementById('mentorFeedback').textContent = `📌 Salin manual: ${text}`;
+            }
+        }
+
+        function copyGeneratedCode() {
+            const code = document.getElementById('generatedCodeDisplay').textContent.trim();
+            copyTextSafe(code, `📋 Kode ${code} berhasil disalin!`);
+        }
+
+        function copyStudentLinkWithCode() {
+            const code = document.getElementById('generatedCodeDisplay').textContent.trim();
+            const url = new URL('murid.html', window.location.href);
+            url.searchParams.set('kode', code);
+            copyTextSafe(url.toString(), `🔗 Link murid dengan kode ${code} berhasil disalin!`);
+        }
+
+        function clearHistory() {
+            saveHistory([]);
+            renderHistory([]);
+            document.getElementById('mentorFeedback').textContent = '🗑️ Riwayat kode dibersihkan.';
+        }
+
+        function renderHistory(history) {
+            const listEl = document.getElementById('codeHistoryList');
+            if (!history || history.length === 0) {
+                listEl.innerHTML = '<li class="text-slate-400 italic">Belum ada riwayat kode.</li>';
+                return;
+            }
+            const labels = { k1: 'Kelas 1 SD', k3: 'Kelas 3 SD', k4: 'Kelas 4 SD', all: 'Semua Kelas' };
+            listEl.innerHTML = history.map(item => `
+                <li class="flex items-center justify-between bg-white border-2 border-slate-200 rounded-xl px-3 py-1.5">
+                    <span><b class="text-slate-950">${item.code}</b> • ${labels[item.targetClass] || item.targetClass}</span>
+                    <span class="text-[11px] text-slate-500">${item.time}</span>
+                </li>
+            `).join('');
+        }
+
+        function readState(storageKey) {
+            try {
+                const raw = localStorage.getItem(storageKey);
+                return raw ? JSON.parse(raw) : null;
+            } catch (_) {
+                return null;
+            }
+        }
+
+        function computeStats(st, maxScore) {
+            if (!st || !st.questionResults) {
+                return { totalScore: 0, right: 0, wrong: 0, grade100: 0, predicate: 'Belum Mulai', answeredCount: 0 };
+            }
+            let totalScore = 0;
+            let right = 0;
+            let wrong = 0;
+            let answeredCount = 0;
+
+            Object.values(st.questionResults).forEach(item => {
+                if (item && item.answered) {
+                    answeredCount++;
+                    const sc = Number(item.score || 0);
+                    totalScore += sc;
+                    if (item.status === 'correct' || sc > 0) {
+                        right++;
+                    } else {
+                        wrong++;
+                    }
+                }
+            });
+
+            const grade100 = Math.round((totalScore / maxScore) * 1000) / 10;
+            let predicate = 'Perlu Bimbingan';
+            if (grade100 >= 90) predicate = 'Sangat Baik (A)';
+            else if (grade100 >= 75) predicate = 'Baik (B)';
+            else if (grade100 >= 60) predicate = 'Cukup (C)';
+
+            return { totalScore, right, wrong, grade100, predicate, answeredCount };
+        }
+
+        function updateClassCardSummary(classKey) {
+            const meta = CLASS_META[classKey];
+            const st = readState(meta.storageKey);
+            const badgeEl = document.getElementById('badgeCount' + classKey.toUpperCase());
+            const infoEl = document.getElementById('scoreInfo' + classKey.toUpperCase());
+
+            const studentName = (st && st.studentName) ? st.studentName.trim() : '';
+            const hasAccessed = Boolean(st && (st.studentName || (st.questionResults && Object.keys(st.questionResults).length > 0)));
+
+            if (!hasAccessed) {
+                badgeEl.textContent = '👤 0 Murid Masuk';
+                infoEl.textContent = '📊 Belum ada murid yang mengakses';
+                return;
+            }
+
+            badgeEl.textContent = '👤 1 Murid Masuk';
+            const stats = computeStats(st, meta.maxScore);
+            const nameDisplay = studentName || 'Siswa';
+            infoEl.textContent = `👤 ${nameDisplay} • Skor: ${stats.totalScore}/${meta.maxScore} (Nilai: ${stats.grade100})`;
+        }
+
+        function openStudentDetailModal(classKey) {
+            const meta = CLASS_META[classKey];
+            const st = readState(meta.storageKey);
+            const modal = document.getElementById('studentDetailModal');
+            const titleEl = document.getElementById('modalTitle');
+            const subEl = document.getElementById('modalSubtitle');
+            const bodyEl = document.getElementById('modalContentBody');
+
+            titleEl.textContent = `📋 Rekap Murid — ${meta.name}`;
+            subEl.textContent = `Daftar siswa yang mengakses game soal ${meta.name}`;
+
+            if (!st || (!st.studentName && (!st.questionResults || Object.keys(st.questionResults).length === 0))) {
+                bodyEl.innerHTML = `
+                    <div class="bg-amber-50 border-3 border-slate-800 rounded-2xl p-6 text-center">
+                        <div class="text-3xl mb-2">📭</div>
+                        <div class="font-bold text-slate-900 text-base">Belum ada murid yang mengakses game ini di perangkat ini.</div>
+                        <p class="text-xs text-slate-600 mt-1">Pastikan murid sudah membuka halaman game dan mengerjakan soal.</p>
+                    </div>
+                `;
+            } else {
+                const studentName = st.studentName ? st.studentName : 'Siswa Tanpa Nama';
+                const stats = computeStats(st, meta.maxScore);
+                const clearedCount = Array.isArray(st.levelCleared) ? st.levelCleared.filter(Boolean).length : 0;
+
+                bodyEl.innerHTML = `
+                    <div class="bg-emerald-50 border-3 border-slate-800 rounded-2xl p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-slate-900 text-lg">🎒 ${studentName}</span>
+                            <span class="chip-badge bg-amber-300 text-slate-950">${stats.predicate}</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs font-bold">
+                            <div class="bg-white border-2 border-slate-800 rounded-xl p-2">
+                                <div class="text-slate-500">Soal Dikerjakan</div>
+                                <div class="text-sm sm:text-base text-slate-900 mt-0.5">${stats.answeredCount} Soal</div>
+                            </div>
+                            <div class="bg-white border-2 border-slate-800 rounded-xl p-2">
+                                <div class="text-emerald-700">Total Benar / Salah</div>
+                                <div class="text-sm sm:text-base text-slate-900 mt-0.5">✅ ${stats.right} • ❌ ${stats.wrong}</div>
+                            </div>
+                            <div class="bg-white border-2 border-slate-800 rounded-xl p-2">
+                                <div class="text-slate-500">Total Skor ASAS</div>
+                                <div class="text-sm sm:text-base text-slate-900 mt-0.5">${stats.totalScore} / ${meta.maxScore}</div>
+                            </div>
+                            <div class="bg-amber-100 border-2 border-slate-800 rounded-xl p-2">
+                                <div class="text-amber-900">Nilai Akhir (0–100)</div>
+                                <div class="text-sm sm:text-base text-slate-950 mt-0.5 font-bold">${stats.grade100}</div>
+                            </div>
+                        </div>
+                        <div class="text-xs font-semibold text-slate-700 pt-1">
+                            📌 Status Level: <b>${clearedCount}/5 Level Selesai</b> ${st.allCompleted ? '• 🏅 Lulus & Bersertifikat' : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeStudentDetailModal() {
+            document.getElementById('studentDetailModal').style.display = 'none';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const history = getHistory();
+            if (history.length > 0) {
+                document.getElementById('generatedCodeDisplay').textContent = history[0].code;
+                document.getElementById('targetClassSelect').value = history[0].targetClass || 'k1';
+            } else {
+                generateRandomCode();
+            }
+            renderHistory(getHistory());
+
+            updateClassCardSummary('k1');
+            updateClassCardSummary('k3');
+            updateClassCardSummary('k4');
+        });
+    </script>
+</body>
+</html>

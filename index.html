@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PintarVerse — Gerbang Masuk Arena Balap Juara Matematika SD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark: #1e293b;
+            --amber: #f59e0b;
+            --sky: #0ea5e9;
+            --emerald: #22c55e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Fredoka', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #38bdf8 0%, #bae6fd 58%, #bbf7d0 58%, #4ade80 100%);
+            color: var(--dark);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .cloud {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 999px;
+            z-index: 0;
+            pointer-events: none;
+            animation: driftCloud linear infinite;
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: inherit;
+            border-radius: 50%;
+        }
+        .cloud-1 { width: 130px; height: 42px; top: 7%; left: -150px; animation-duration: 34s; }
+        .cloud-1::before { width: 60px; height: 60px; top: -28px; left: 18px; }
+        .cloud-1::after { width: 48px; height: 48px; top: -20px; right: 20px; }
+
+        .cloud-2 { width: 160px; height: 48px; top: 18%; left: -180px; animation-duration: 46s; animation-delay: -14s; }
+        .cloud-2::before { width: 72px; height: 72px; top: -34px; left: 24px; }
+        .cloud-2::after { width: 56px; height: 56px; top: -24px; right: 24px; }
+
+        .cloud-3 { width: 115px; height: 36px; top: 29%; left: -140px; animation-duration: 29s; animation-delay: -7s; }
+        .cloud-3::before { width: 50px; height: 50px; top: -22px; left: 16px; }
+        .cloud-3::after { width: 42px; height: 42px; top: -16px; right: 16px; }
+
+        @keyframes driftCloud {
+            from { transform: translateX(0); }
+            to { transform: translateX(calc(100vw + 350px)); }
+        }
+
+        .road-strip {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 76px;
+            background: #334155;
+            border-top: 6px solid #1e293b;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .road-dashes {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 200%;
+            height: 8px;
+            transform: translateY(-50%);
+            background: repeating-linear-gradient(90deg, #fde047 0 44px, transparent 44px 88px);
+            animation: moveRoad 2.2s linear infinite;
+        }
+        @keyframes moveRoad {
+            from { transform: translate(0, -50%); }
+            to { transform: translate(-88px, -50%); }
+        }
+
+        .deco-car {
+            position: fixed;
+            bottom: 34px;
+            font-size: 2.3rem;
+            z-index: 2;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 0 rgba(15, 23, 42, 0.35));
+            animation: driveCar 14s linear infinite;
+        }
+        @keyframes driveCar {
+            0% { left: -70px; transform: scaleX(-1); }
+            100% { left: calc(100vw + 70px); transform: scaleX(-1); }
+        }
+
+        .cartoon-panel {
+            background: rgba(255, 255, 255, 0.96);
+            border: 4px solid var(--dark);
+            border-radius: 30px;
+            box-shadow: 0 10px 0 var(--dark);
+        }
+
+        .gate-card {
+            background: #ffffff;
+            border: 4px solid var(--dark);
+            border-radius: 26px;
+            box-shadow: 0 8px 0 var(--dark);
+            transition: transform 0.16s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.16s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .gate-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 0 var(--dark);
+        }
+
+        .gate-btn {
+            border: 3px solid var(--dark);
+            border-radius: 18px;
+            padding: 14px 20px;
+            font-size: 1.08rem;
+            font-weight: 700;
+            box-shadow: 0 5px 0 var(--dark);
+            transition: transform 0.08s, box-shadow 0.08s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .gate-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 var(--dark);
+        }
+
+        .btn-guru {
+            background: linear-gradient(180deg, #fde047, #f59e0b);
+            color: #0f172a;
+        }
+
+        .btn-murid {
+            background: linear-gradient(180deg, #4ade80, #16a34a);
+            color: #ffffff;
+        }
+
+        .chip-badge {
+            border: 2.5px solid var(--dark);
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 3px 0 var(--dark);
+        }
+
+        .sun-orb {
+            position: fixed;
+            top: 24px;
+            right: 32px;
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fef08a 25%, #facc15 100%);
+            border: 4px solid #ca8a04;
+            box-shadow: 0 0 30px rgba(250, 204, 21, 0.75);
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="py-6 px-4 pb-28 flex items-center justify-center">
+
+    <div class="sun-orb"></div>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="road-strip"><div class="road-dashes"></div></div>
+    <div class="deco-car">🏎️</div>
+
+    <main class="relative z-10 max-w-4xl w-full mx-auto">
+        <header class="cartoon-panel p-6 sm:p-8 text-center mb-6 bg-gradient-to-b from-amber-50 to-white">
+            <div class="inline-flex flex-wrap items-center justify-center gap-2 mb-2">
+                <span class="chip-badge bg-slate-900 text-amber-300">
+                    🚀 PINTARVERSE • GERBANG UTAMA
+                </span>
+                <span class="chip-badge bg-emerald-200 text-slate-900">
+                    📚 ASESMEN SUMATIF AKHIR SEMESTER I
+                </span>
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight mt-1">
+                🌟 PintarVerse
+            </h1>
+            <p class="text-base sm:text-lg font-bold text-amber-900 mt-1">
+                Arena Balap Juara Matematika SD (Kelas 1, Kelas 3 &amp; Kelas 4)
+            </p>
+            <p class="text-xs sm:text-sm font-semibold text-slate-600 max-w-xl mx-auto mt-1.5">
+                Silakan pilih jalur masuk sesuai peran Anda saat ini:
+            </p>
+        </header>
+
+        <!-- GERBANG 2 TOMBOL: GURU VS MURID -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- TOMBOL 1: GURU / TUTOR / ORANG TUA -->
+            <article class="gate-card p-6 bg-gradient-to-b from-amber-50 to-white">
+                <div class="text-center mb-5">
+                    <span class="chip-badge bg-amber-300 text-slate-950 mb-3">
+                        🔐 PEMEGANG KODE ACAK
+                    </span>
+                    <div class="text-5xl mb-2">👩‍🏫</div>
+                    <h2 class="text-2xl font-bold text-slate-900">
+                        Guru / Tutor / Orang Tua
+                    </h2>
+                    <p class="text-xs sm:text-sm font-semibold text-slate-600 mt-1.5">
+                        Buat kode acak per kelas atau semua kelas, salin kode/link sesi, dan pantau progres latihan.
+                    </p>
+                </div>
+
+                <a href="guru.html" class="gate-btn btn-guru">
+                    👩‍🏫 Masuk Halaman Guru / Pendamping →
+                </a>
+            </article>
+
+            <!-- TOMBOL 2: MURID / SISWA / ANAK -->
+            <article class="gate-card p-6 bg-gradient-to-b from-emerald-50 to-white">
+                <div class="text-center mb-5">
+                    <span class="chip-badge bg-emerald-300 text-slate-950 mb-3">
+                        🎟️ PENERIMA KODE
+                    </span>
+                    <div class="text-5xl mb-2">🧒🏎️</div>
+                    <h2 class="text-2xl font-bold text-slate-900">
+                        Murid / Siswa / Anak
+                    </h2>
+                    <p class="text-xs sm:text-sm font-semibold text-slate-600 mt-1.5">
+                        Masukkan kode yang diterima dari guru, tutor, atau orang tua lalu mulai balap matematika.
+                    </p>
+                </div>
+
+                <a href="murid.html" class="gate-btn btn-murid">
+                    🧒 Masuk Halaman Murid →
+                </a>
+            </article>
+        </section>
+    </main>
+
+</body>
+</html>
